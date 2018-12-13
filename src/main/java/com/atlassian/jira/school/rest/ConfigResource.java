@@ -7,16 +7,15 @@ import javax.ws.rs.core.Response;
 
 import com.atlassian.crowd.exception.OperationNotPermittedException;
 import com.atlassian.crowd.exception.embedded.InvalidGroupException;
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.security.groups.GroupManager;
+import com.atlassian.jira.school.impl.GroupCreation;
 
 @Path("/setup")
 public class ConfigResource {
 
-	private GroupManager groupManager;
+	private GroupCreation groupCreation;
 	
 	public ConfigResource() {
-		groupManager = ComponentAccessor.getGroupManager();
+		this.groupCreation = new GroupCreation();
 	}
 	
     @GET
@@ -28,7 +27,9 @@ public class ConfigResource {
     
     @POST
     public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException {
-    	groupManager.createGroup("Teachers");
+    	groupCreation.studentsGroup();
+    	groupCreation.teachersGroup();
+    	groupCreation.classesGroup();
     	return Response.created(null).build();
     }
 }
