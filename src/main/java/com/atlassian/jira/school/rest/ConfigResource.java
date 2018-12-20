@@ -9,17 +9,19 @@ import com.atlassian.crowd.exception.OperationNotPermittedException;
 import com.atlassian.crowd.exception.embedded.InvalidGroupException;
 import com.atlassian.jira.school.impl.GroupCreation;
 import com.atlassian.jira.school.impl.IssueTypeCreation;
-
+import com.atlassian.jira.school.impl.ProjectRoleCreation;
 
 @Path("/setup")
 public class ConfigResource {
 
 	private GroupCreation groupCreation;
 	private IssueTypeCreation issueTypeCreation;
+	private ProjectRoleCreation projectRoleCreation;
 
 	public ConfigResource() {
 		this.groupCreation = new GroupCreation();
 		this.issueTypeCreation = new IssueTypeCreation();
+		this.projectRoleCreation = new ProjectRoleCreation();
 	}
 
 	@GET
@@ -30,6 +32,9 @@ public class ConfigResource {
 
 	@POST
 	public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException {
+
+		projectRoleCreation.DivisionsProjectRole();
+		projectRoleCreation.FormTeacherProjectRole();
 
 		issueTypeCreation.subjectIssueType();
 		issueTypeCreation.lectureIssueType();
