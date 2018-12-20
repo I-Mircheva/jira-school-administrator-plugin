@@ -33,9 +33,14 @@ public class ConfigResource {
     public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException {
 
 	    issueTypeCreation.subjectIssueType();
+	    issueTypeCreation.lectureIssueType();
+	    issueTypeCreation.homeworkIssueType();
+	    issueTypeCreation.studentRecordIssueType();
+
         groupCreation.studentsGroup();
     	groupCreation.teachersGroup();
     	groupCreation.classesGroup();
+
     	return Response.created(null).build();
     }
 }

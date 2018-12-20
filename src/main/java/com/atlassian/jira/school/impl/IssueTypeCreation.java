@@ -18,4 +18,24 @@ public class IssueTypeCreation {
             issueTypeManager.createIssueType("Subject","Subject in school", new Long(1));
         } catch (IllegalStateException ignore) {}
     }
+
+    public void lectureIssueType() {
+        try {
+            issueTypeManager.createIssueType("Lecture","Lecture on subject", new Long(1));
+        } catch (IllegalStateException ignore) {}
+    }
+
+    public void homeworkIssueType() {
+        try {
+            issueTypeManager.createSubTaskIssueType("Homework","Homework on lecture", new Long(1));
+        } catch (IllegalStateException ignore) {}
+    }
+
+    public void studentRecordIssueType() {
+        try {
+            issueTypeManager.createIssueType("Student Record","Single Student Record", new Long(1));
+        } catch (IllegalStateException ignore) {}
+    }
+
+
 }
