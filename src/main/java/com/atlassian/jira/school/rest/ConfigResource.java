@@ -16,31 +16,30 @@ public class ConfigResource {
 
 	private GroupCreation groupCreation;
 	private IssueTypeCreation issueTypeCreation;
-	
+
 	public ConfigResource() {
-	    this.groupCreation = new GroupCreation();
-	    this.issueTypeCreation = new IssueTypeCreation();
+		this.groupCreation = new GroupCreation();
+		this.issueTypeCreation = new IssueTypeCreation();
 	}
-	
-    @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response getMessage()
-    {
-       return Response.ok(new ConfigResourceModel("Hello World")).build();
-    }
-    
-    @POST
-    public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException {
 
-	    issueTypeCreation.subjectIssueType();
-	    issueTypeCreation.lectureIssueType();
-	    issueTypeCreation.homeworkIssueType();
-	    issueTypeCreation.studentRecordIssueType();
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response getMessage() {
+		return Response.ok(new ConfigResourceModel("Hello World")).build();
+	}
 
-        groupCreation.studentsGroup();
-    	groupCreation.teachersGroup();
-    	groupCreation.classesGroup();
+	@POST
+	public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException {
 
-    	return Response.created(null).build();
-    }
+		issueTypeCreation.subjectIssueType();
+		issueTypeCreation.lectureIssueType();
+		issueTypeCreation.homeworkIssueType();
+		issueTypeCreation.studentRecordIssueType();
+
+		groupCreation.studentsGroup();
+		groupCreation.teachersGroup();
+		groupCreation.classesGroup();
+
+		return Response.created(null).build();
+	}
 }
