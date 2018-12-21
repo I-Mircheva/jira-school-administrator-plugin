@@ -1,5 +1,17 @@
 ###disable_html_escaping()
 ## Calls the get request
+
 <li id="menu">
-    <a class="aui-button aui-button-primary aui-style" href="http://localhost:2990/jira/rest/school/config/1.0/setup">School</a>
+    <form action="/jira/rest/school/config/1.0/setup" method="post">
+        <button id="button" class="aui-button aui-button-primary aui-style" type="submit" name="buttonconfig" value="buttonconfig">School</button>
+    </form>
 </li>
+
+##<script type="text/javascript">
+##    // onclick event is assigned to the #button element.
+##    // Does not work
+##     document.getElementById("button").onClick = function() {
+##         location.href = "https://www.google.com";
+##     };
+## </script>
+
