@@ -27,7 +27,7 @@ public class ConfigResource {
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response getMessage() {
-		return Response.ok(new ConfigResourceModel("Hello World")).build();
+		return Response.ok(new ConfigResourceModel("Hello Weary Traveller!")).build();
 	}
 
 	@POST

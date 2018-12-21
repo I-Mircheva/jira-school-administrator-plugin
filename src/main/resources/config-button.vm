@@ -1,0 +1,5 @@
+###disable_html_escaping()
+## Calls the get request
+<li id="menu">
+    <a class="aui-button aui-button-primary aui-style" href="http://localhost:2990/jira/rest/school/config/1.0/setup">School</a>
+</li>

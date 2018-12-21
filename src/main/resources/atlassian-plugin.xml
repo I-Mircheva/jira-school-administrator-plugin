@@ -18,8 +18,16 @@
         <resource type="download" name="images/" location="/images"/>
         <context>jira-shool-plugin</context>
     </web-resource>
+    <!--add rest post config request-->
     <rest name="Config Resource" i18n-name-key="config-resource.name" key="config-resource" path="/school/config"
           version="1.0">
         <description key="config-resource.description">The Config Resource Plugin</description>
     </rest>
+    <!--web panel button post request-->
+    <web-panel key="menu" location="com.atlassian.jira.plugin.headernav.left.context" weight="35">
+        <label> School </label>
+        <resource type="velocity" name="view" location="config-button.vm"/>
+    </web-panel>
+
+
 </atlassian-plugin>
