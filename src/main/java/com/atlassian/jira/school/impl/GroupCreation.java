@@ -33,7 +33,7 @@ public class GroupCreation {
 				groupManager.createGroup(i + "st grade");
 			} else if (i == 2 && groupDoesNotExist(i + "nd grade")) {
 				groupManager.createGroup(i + "nd grade");
-			} else if (groupDoesNotExist(i + "th grade")) {
+			} else if (i!=1 && i!=2 && groupDoesNotExist(i + "th grade")) {
 				groupManager.createGroup(i + "th grade");
 			}
 		}
