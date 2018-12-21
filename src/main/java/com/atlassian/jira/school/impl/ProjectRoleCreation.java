@@ -15,15 +15,30 @@ public class ProjectRoleCreation {
 	}
 
 	public void FormTeacherProjectRole() {
-		projectRoleService.createProjectRole(
-				new ProjectRoleImpl("From-Teacher", "Form-Teacher of a class' devision"), errorCollection);
+		if(projectRoleDoesNotExist("From-Teacher")) {
+			projectRoleService.createProjectRole(
+					new ProjectRoleImpl("From-Teacher", "Form-Teacher of a class' devision"), errorCollection);
+		}
 	}
 
 	public void DivisionsProjectRole() {
-		projectRoleService.createProjectRole(new ProjectRoleImpl("A", "Division A"), errorCollection);
-		projectRoleService.createProjectRole(new ProjectRoleImpl("B", "Division B"), errorCollection);
-		projectRoleService.createProjectRole(new ProjectRoleImpl("V", "Division V"), errorCollection);
-		projectRoleService.createProjectRole(new ProjectRoleImpl("G", "Division G"), errorCollection);
+		if(projectRoleDoesNotExist("A")) {
+			projectRoleService.createProjectRole(new ProjectRoleImpl("A", "Division A"), errorCollection);
+		}
+		if(projectRoleDoesNotExist("B")) {
+			projectRoleService.createProjectRole(new ProjectRoleImpl("B", "Division B"), errorCollection);
+		}
+		if(projectRoleDoesNotExist("V")) {
+			projectRoleService.createProjectRole(new ProjectRoleImpl("V", "Division V"), errorCollection);
+		}
+		if(projectRoleDoesNotExist("G")) {
+			projectRoleService.createProjectRole(new ProjectRoleImpl("G", "Division G"), errorCollection);
+		}
+
+	}
+
+	private boolean projectRoleDoesNotExist(String arg) {
+		return (projectRoleService.getProjectRoleByName(arg, errorCollection) == null);
 	}
 
 }

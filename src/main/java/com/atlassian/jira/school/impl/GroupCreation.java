@@ -16,26 +16,30 @@ public class GroupCreation {
 	}
 
 	public void teachersGroup() throws OperationNotPermittedException, InvalidGroupException {
-		groupManager.createGroup("Teachers");
+		if(groupDoesNotExist("Teachers")) {
+			groupManager.createGroup("Teachers");
+		}
 	}
 
 	public void studentsGroup() throws OperationNotPermittedException, InvalidGroupException {
-		groupManager.createGroup("Students");
+		if(groupDoesNotExist("Students")) {
+			groupManager.createGroup("Students");
+		}
 	}
 
 	public void classesGroup() throws OperationNotPermittedException, InvalidGroupException {
 		for (int i = 1; i <= 12; i++) {
-			if (i == 1) {
+			if (i == 1 && groupDoesNotExist(i + "st grade")) {
 				groupManager.createGroup(i + "st grade");
-			} else if (i == 2) {
+			} else if (i == 2 && groupDoesNotExist(i + "nd grade")) {
 				groupManager.createGroup(i + "nd grade");
-			} else {
+			} else if (groupDoesNotExist(i + "th grade")) {
 				groupManager.createGroup(i + "th grade");
 			}
 		}
 	}
 
-	private boolean ifGroupExists(String arg) {
-		return (groupManager.getGroup(arg) != null);
+	private boolean groupDoesNotExist(String arg) {
+		return (groupManager.getGroup(arg) == null);
 	}
 }
