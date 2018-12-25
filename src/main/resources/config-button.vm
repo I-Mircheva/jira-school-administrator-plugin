@@ -2,16 +2,24 @@
 ## Calls the get request
 
 <li id="menu">
-    <form action="/jira/rest/school/config/1.0/setup" method="post">
-        <button id="button" class="aui-button aui-button-primary aui-style" type="submit" name="buttonconfig" value="buttonconfig">School</button>
+##    so it does not redirect to a new page
+    <iframe width="0" height="0" style="display: none;" border="0" name="dummyframe" id="dummyframe"></iframe>
+    <form action="/jira/rest/school/config/1.0/setup" method="post" target="dummyframe">
+        <button onclick="alertAndReloadFunction()" id="button" class="aui-button aui-button-primary aui-style" type="submit" name="buttonconfig" value="buttonconfig">
+            School
+        </button>
     </form>
 </li>
 
-##<script type="text/javascript">
-##    // onclick event is assigned to the #button element.
-##    // Does not work
-##     document.getElementById("button").onClick = function() {
-##         location.href = "https://www.google.com";
-##     };
-## </script>
 
+<script>
+    function alertAndReloadFunction() {
+        // if status is 2**
+        alert("Everything created!");
+        setTimeout(function() {
+        location.reload();
+        }, 700);
+    }
+</script>
+
+##<script type="text/javascript" src="/resources/js/jira-school-plugin.js"></script>
