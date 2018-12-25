@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.atlassian.jira.school</groupId>
-    <artifactId>jira-shool-plugin</artifactId>
+    <artifactId>jira-school-plugin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <organization>
         <name>Example Company</name>
         <url>http://www.example.com/</url>
     </organization>
-    <name>jira-shool-plugin</name>
-    <description>This is the com.atlassian.jira.school:jira-shool-plugin plugin for Atlassian JIRA.</description>
+    <name>jira-school-plugin</name>
+    <description>This is the com.atlassian.jira.school:jira-school-plugin plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencies>
         <dependency>

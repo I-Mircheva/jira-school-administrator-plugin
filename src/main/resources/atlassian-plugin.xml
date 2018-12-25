@@ -9,14 +9,14 @@
         <param name="plugin-logo">images/pluginLogo.png</param>
     </plugin-info>
     <!-- add our i18n resource -->
-    <resource type="i18n" name="i18n" location="jira-shool-plugin"/>
+    <resource type="i18n" name="i18n" location="jira-school-plugin"/>
     <!-- add our web resources -->
-    <web-resource key="jira-shool-plugin-resources" name="jira-shool-plugin Web Resources">
+    <web-resource key="jira-school-plugin-resources" name="jira-school-plugin Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        <resource type="download" name="jira-shool-plugin.css" location="/css/jira-shool-plugin.css"/>
-        <resource type="download" name="jira-shool-plugin.js" location="/js/jira-shool-plugin.js"/>
+        <resource type="download" name="jira-school-plugin.css" location="/css/jira-school-plugin.css"/>
+        <resource type="download" name="jira-school-plugin.js" location="/js/jira-school-plugin.js"/>
         <resource type="download" name="images/" location="/images"/>
-        <context>jira-shool-plugin</context>
+        <context>jira-school-plugin</context>
     </web-resource>
     <!--add rest post config request-->
     <rest name="Config Resource" i18n-name-key="config-resource.name" key="config-resource" path="/school/config"
@@ -28,6 +28,5 @@
         <label> School </label>
         <resource type="velocity" name="view" location="config-button.vm"/>
     </web-panel>
-
 
 </atlassian-plugin>
