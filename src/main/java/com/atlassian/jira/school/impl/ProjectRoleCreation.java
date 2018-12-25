@@ -4,7 +4,9 @@ import com.atlassian.jira.bc.projectroles.ProjectRoleService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.security.roles.ProjectRoleImpl;
 import com.atlassian.jira.util.ErrorCollection;
+import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 
+@Scanned
 public class ProjectRoleCreation {
 
 	private ProjectRoleService projectRoleService;
