@@ -8,10 +8,7 @@ import javax.ws.rs.core.Response;
 import com.atlassian.crowd.exception.OperationNotPermittedException;
 import com.atlassian.crowd.exception.embedded.InvalidGroupException;
 import com.atlassian.jira.permission.PermissionScheme;
-import com.atlassian.jira.school.impl.GroupCreation;
-import com.atlassian.jira.school.impl.IssueTypeCreation;
-import com.atlassian.jira.school.impl.PermissionCreation;
-import com.atlassian.jira.school.impl.ProjectRoleCreation;
+import com.atlassian.jira.school.impl.*;
 
 @Path("/setup")
 public class ConfigResource {
@@ -20,12 +17,14 @@ public class ConfigResource {
 	private IssueTypeCreation issueTypeCreation;
 	private ProjectRoleCreation projectRoleCreation;
 	private PermissionCreation permissionCreation;
+	private IssueTypeSchemeCreation issueTypeSchemeCreation;
 
 	public ConfigResource() {
 		this.groupCreation = new GroupCreation();
 		this.issueTypeCreation = new IssueTypeCreation();
 		this.projectRoleCreation = new ProjectRoleCreation();
 		this.permissionCreation = new PermissionCreation();
+		this.issueTypeSchemeCreation = new IssueTypeSchemeCreation();
 
 	}
 
@@ -49,6 +48,9 @@ public class ConfigResource {
 		groupCreation.studentsGroup();
 		groupCreation.teachersGroup();
 		groupCreation.classesGroup();
+
+		issueTypeSchemeCreation.schoolIssueTypeScheme();
+		issueTypeSchemeCreation.studentIssueTypeScheme();
 
 		permissionCreation.createPermissionScheme(groupCreation);
 
