@@ -15,10 +15,6 @@ public class GroupCreation {
 		groupManager = ComponentAccessor.getGroupManager();
 	}
 
-	public GroupManager getGroupManager() {
-		return groupManager;
-	}
-
 	public void teachersGroup() throws OperationNotPermittedException, InvalidGroupException {
 		if(groupDoesNotExist("Teachers")) {
 			groupManager.createGroup("Teachers");

@@ -1,10 +1,12 @@
 package com.atlassian.jira.school.impl;
 
 
+import com.atlassian.crowd.embedded.api.Group;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.permission.PermissionSchemeManager;
 import com.atlassian.jira.scheme.Scheme;
 import com.atlassian.jira.scheme.SchemeEntity;
+import com.atlassian.jira.security.groups.GroupManager;
 import com.atlassian.jira.security.plugin.ProjectPermissionKey;
 import com.atlassian.jira.security.roles.ProjectRole;
 import com.atlassian.jira.security.roles.ProjectRoleManager;
@@ -18,7 +20,7 @@ import static com.atlassian.jira.permission.ProjectPermissions.*;
 @Scanned
 public class PermissionCreation {
 
-//	private static final String GROUP_PERMISSION_TYPE = "group";
+	private static final String GROUP_PERMISSION_TYPE = "group";
 	private PermissionSchemeManager permissionSchemeManager;
 
 	public PermissionCreation() {
@@ -34,30 +36,27 @@ public class PermissionCreation {
 		);
 	}
 
-//	private SchemeEntity entityBuilderG(Group group, ProjectPermissionKey permissionKey) {
-//		return new SchemeEntity(
-//				GROUP_PERMISSION_TYPE,
-//				group.getName(),
-//				permissionKey
-//		);
-//	}
+	private SchemeEntity entityBuilderG(Group group, ProjectPermissionKey permissionKey) {
+		return new SchemeEntity(
+				GROUP_PERMISSION_TYPE,
+				group.getName(),
+				permissionKey
+		);
+	}
 
 	public void createPermissionScheme(GroupCreation groupCreation) {
+
 		ProjectRoleManager projectRoleManager = ComponentAccessor.getComponent(ProjectRoleManager.class);
 		ProjectRole administrators = projectRoleManager.getProjectRole("A");
 		ProjectRole developers = projectRoleManager.getProjectRole("B");
 		ProjectRole users = projectRoleManager.getProjectRole("From-Teacher");
 
-//		Can't use group manager again because of java.lang.LinkageError: com/atlassian/crowd/embedded/api/Group
-
-//		GroupManager groupManager = groupCreation.getGroupManager();
-//		Group teachers = groupManager.getGroup("Teachers");
+		Group teachers = null;
 
 		Collection<SchemeEntity> schemeEntities = new ArrayList<>();
 
-//		schemeEntities.add(entityBuilderG(teachers, ADD_COMMENTS));
-//		schemeEntities.add(entityBuilderG(teachers, ADMINISTER_PROJECTS));
-
+		schemeEntities.add(entityBuilderG(teachers, ADD_COMMENTS));
+		schemeEntities.add(entityBuilderG(teachers, ADMINISTER_PROJECTS));
 
 		schemeEntities.add(entityBuilder(administrators, ADD_COMMENTS));
 		schemeEntities.add(entityBuilder(administrators, ADMINISTER_PROJECTS));
@@ -131,8 +130,10 @@ public class PermissionCreation {
 				.get()
 				.getId() + 1;
 
-		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "ID Permission Scheme", schemeEntities);
+		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "Default Permission Scheme", schemeEntities);
 
-		permissionSchemeManager.createSchemeAndEntities(draftScheme);
+		if(permissionSchemeManager.getSchemeEntityName().equals("Default Permission Scheme")) {
+			permissionSchemeManager.createSchemeAndEntities(draftScheme);
+		}
 	}
 }
