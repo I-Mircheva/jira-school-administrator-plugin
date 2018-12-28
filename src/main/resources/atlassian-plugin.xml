@@ -26,7 +26,21 @@
     <!--web panel button post request-->
     <web-panel key="menu" location="com.atlassian.jira.plugin.headernav.left.context" weight="35">
         <label> School </label>
-        <resource type="velocity" name="view" location="config-button.vm"/>
+        <resource type="velocity" name="view" location="templates/config-button.vm"/>
     </web-panel>
+
+    <customfield-type name="Teacher Custom Field" i18n-name-key="jira-custom-field.name" key="teachertextfield" class="com.atlassian.jira.school.customfields.CustomFieldCreation">
+        <description>A text field only editable by those within the Teachers group</description>
+        <resource type="velocity" name="view" location="templates/plugins/fields/view/view-basictext.vm"/>
+        <resource type="velocity" name="edit" location="templates/edit-teacher-field.vm"/>
+        <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
+    </customfield-type>
+
+    <customfield-type name="Form Teacher Custom Field" i18n-name-key="jira-custom-field.name2" key="formteachertextfield" class="com.atlassian.jira.school.customfields.CustomFieldCreation">
+        <description>A text field only editable by those with the Form Teacher project role</description>
+        <resource type="velocity" name="view" location="templates/plugins/fields/view/view-basictext.vm"/>
+        <resource type="velocity" name="edit" location="templates/edit-form-teacher-field.vm"/>
+        <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
+    </customfield-type>
 
 </atlassian-plugin>
