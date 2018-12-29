@@ -52,7 +52,7 @@ public class ConfigResource {
 		issueTypeSchemeCreation.schoolIssueTypeScheme();
 		issueTypeSchemeCreation.studentIssueTypeScheme();
 
-		permissionCreation.createPermissionScheme(groupCreation);
+		permissionCreation.createPermissionScheme();
 
 		return Response.created(null).build();
 	}

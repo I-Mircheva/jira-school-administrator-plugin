@@ -1,6 +1,5 @@
 package com.atlassian.jira.school.impl;
 
-
 import com.atlassian.crowd.embedded.api.Group;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.permission.PermissionSchemeManager;
@@ -8,121 +7,75 @@ import com.atlassian.jira.scheme.Scheme;
 import com.atlassian.jira.scheme.SchemeEntity;
 import com.atlassian.jira.security.groups.GroupManager;
 import com.atlassian.jira.security.plugin.ProjectPermissionKey;
-import com.atlassian.jira.security.roles.ProjectRole;
-import com.atlassian.jira.security.roles.ProjectRoleManager;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.atlassian.jira.bc.projectroles.ProjectRoleService.PROJECTROLE_PERMISSION_TYPE;
+
 import static com.atlassian.jira.permission.ProjectPermissions.*;
 
 @Scanned
 public class PermissionCreation {
 
-	private static final String GROUP_PERMISSION_TYPE = "group";
 	private PermissionSchemeManager permissionSchemeManager;
+//	private static final String GROUP_PERMISSION_TYPE = "group";
+	private GroupManager groupManager;
 
 	public PermissionCreation() {
 		permissionSchemeManager = ComponentAccessor.getPermissionSchemeManager();
+		groupManager = ComponentAccessor.getGroupManager();
 	}
 
-
-	private SchemeEntity entityBuilder(ProjectRole projectRole, ProjectPermissionKey permissionKey) {
+	private SchemeEntity entityBuilder(Group group, ProjectPermissionKey permissionKey) {
 		return new SchemeEntity(
-				PROJECTROLE_PERMISSION_TYPE,
-				projectRole.getId().toString(),
-				permissionKey
-		);
-	}
-
-	private SchemeEntity entityBuilderG(Group group, ProjectPermissionKey permissionKey) {
-		return new SchemeEntity(
-				GROUP_PERMISSION_TYPE,
+				"group",
 				group.getName(),
 				permissionKey
 		);
 	}
 
-	public void createPermissionScheme(GroupCreation groupCreation) {
+	public void createPermissionScheme() {
 
-		ProjectRoleManager projectRoleManager = ComponentAccessor.getComponent(ProjectRoleManager.class);
-		ProjectRole administrators = projectRoleManager.getProjectRole("A");
-		ProjectRole developers = projectRoleManager.getProjectRole("B");
-		ProjectRole users = projectRoleManager.getProjectRole("From-Teacher");
-
-		Group teachers = null;
+		Group teachers = groupManager.getGroup("Teachers");
+		Group students = groupManager.getGroup("Students");
 
 		Collection<SchemeEntity> schemeEntities = new ArrayList<>();
 
-		schemeEntities.add(entityBuilderG(teachers, ADD_COMMENTS));
-		schemeEntities.add(entityBuilderG(teachers, ADMINISTER_PROJECTS));
+		schemeEntities.add(entityBuilder(teachers, ADD_COMMENTS));
+		schemeEntities.add(entityBuilder(teachers, ADMINISTER_PROJECTS));
+		schemeEntities.add(entityBuilder(teachers, ASSIGNABLE_USER));
+		schemeEntities.add(entityBuilder(teachers, ASSIGN_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, BROWSE_PROJECTS));
+		schemeEntities.add(entityBuilder(teachers, CLOSE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, CREATE_ATTACHMENTS));
+		schemeEntities.add(entityBuilder(teachers, CREATE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, DELETE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, DELETE_OWN_ATTACHMENTS));
+		schemeEntities.add(entityBuilder(teachers, DELETE_OWN_COMMENTS));
+		schemeEntities.add(entityBuilder(teachers, EDIT_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, EDIT_OWN_COMMENTS));
+		schemeEntities.add(entityBuilder(teachers, LINK_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, MANAGE_WATCHERS));
+		schemeEntities.add(entityBuilder(teachers, MODIFY_REPORTER));
+		schemeEntities.add(entityBuilder(teachers, MOVE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, RESOLVE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, SCHEDULE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, SET_ISSUE_SECURITY));
+		schemeEntities.add(entityBuilder(teachers, TRANSITION_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, VIEW_READONLY_WORKFLOW));
+		schemeEntities.add(entityBuilder(teachers, VIEW_VOTERS_AND_WATCHERS));
+		schemeEntities.add(entityBuilder(teachers, WORK_ON_ISSUES));
 
-		schemeEntities.add(entityBuilder(administrators, ADD_COMMENTS));
-		schemeEntities.add(entityBuilder(administrators, ADMINISTER_PROJECTS));
-		schemeEntities.add(entityBuilder(administrators, ASSIGNABLE_USER));
-		schemeEntities.add(entityBuilder(administrators, ASSIGN_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, BROWSE_PROJECTS));
-		schemeEntities.add(entityBuilder(administrators, CLOSE_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, CREATE_ATTACHMENTS));
-		schemeEntities.add(entityBuilder(administrators, CREATE_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, DELETE_ALL_ATTACHMENTS));
-		schemeEntities.add(entityBuilder(administrators, DELETE_ALL_COMMENTS));
-		schemeEntities.add(entityBuilder(administrators, DELETE_ALL_WORKLOGS));
-		schemeEntities.add(entityBuilder(administrators, DELETE_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, EDIT_ALL_COMMENTS));
-		schemeEntities.add(entityBuilder(administrators, EDIT_ALL_WORKLOGS));
-		schemeEntities.add(entityBuilder(administrators, EDIT_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, LINK_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, MODIFY_REPORTER));
-		schemeEntities.add(entityBuilder(administrators, MOVE_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, RESOLVE_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, SCHEDULE_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, SET_ISSUE_SECURITY));
-		schemeEntities.add(entityBuilder(administrators, TRANSITION_ISSUES));
-		schemeEntities.add(entityBuilder(administrators, VIEW_DEV_TOOLS));
-		schemeEntities.add(entityBuilder(administrators, VIEW_READONLY_WORKFLOW));
-		schemeEntities.add(entityBuilder(administrators, VIEW_VOTERS_AND_WATCHERS));
-		schemeEntities.add(entityBuilder(administrators, WORK_ON_ISSUES));
+		schemeEntities.add(entityBuilder(students, ADD_COMMENTS));
+		schemeEntities.add(entityBuilder(students, ASSIGNABLE_USER));
+		schemeEntities.add(entityBuilder(students, BROWSE_PROJECTS));
+		schemeEntities.add(entityBuilder(students, CREATE_ATTACHMENTS));
+		schemeEntities.add(entityBuilder(students, DELETE_OWN_ATTACHMENTS));
+		schemeEntities.add(entityBuilder(students, DELETE_OWN_COMMENTS));
+		schemeEntities.add(entityBuilder(students, EDIT_OWN_COMMENTS));
+		schemeEntities.add(entityBuilder(students, MANAGE_WATCHERS));
+		schemeEntities.add(entityBuilder(students, VIEW_READONLY_WORKFLOW));
 
-		schemeEntities.add(entityBuilder(developers, ADD_COMMENTS));
-		schemeEntities.add(entityBuilder(developers, ASSIGNABLE_USER));
-		schemeEntities.add(entityBuilder(developers, ASSIGN_ISSUES));
-		schemeEntities.add(entityBuilder(developers, BROWSE_PROJECTS));
-		schemeEntities.add(entityBuilder(developers, CLOSE_ISSUES));
-		schemeEntities.add(entityBuilder(developers, CREATE_ATTACHMENTS));
-		schemeEntities.add(entityBuilder(developers, CREATE_ISSUES));
-		schemeEntities.add(entityBuilder(developers, DELETE_OWN_ATTACHMENTS));
-		schemeEntities.add(entityBuilder(developers, DELETE_OWN_COMMENTS));
-		schemeEntities.add(entityBuilder(developers, DELETE_OWN_WORKLOGS));
-		schemeEntities.add(entityBuilder(developers, EDIT_ISSUES));
-		schemeEntities.add(entityBuilder(developers, EDIT_OWN_COMMENTS));
-		schemeEntities.add(entityBuilder(developers, EDIT_OWN_WORKLOGS));
-		schemeEntities.add(entityBuilder(developers, LINK_ISSUES));
-		schemeEntities.add(entityBuilder(developers, MANAGE_WATCHERS));
-		schemeEntities.add(entityBuilder(developers, MODIFY_REPORTER));
-		schemeEntities.add(entityBuilder(developers, MOVE_ISSUES));
-		schemeEntities.add(entityBuilder(developers, RESOLVE_ISSUES));
-		schemeEntities.add(entityBuilder(developers, SCHEDULE_ISSUES));
-		schemeEntities.add(entityBuilder(developers, SET_ISSUE_SECURITY));
-		schemeEntities.add(entityBuilder(developers, TRANSITION_ISSUES));
-		schemeEntities.add(entityBuilder(developers, VIEW_DEV_TOOLS));
-		schemeEntities.add(entityBuilder(developers, VIEW_READONLY_WORKFLOW));
-		schemeEntities.add(entityBuilder(developers, VIEW_VOTERS_AND_WATCHERS));
-		schemeEntities.add(entityBuilder(developers, WORK_ON_ISSUES));
-
-		schemeEntities.add(entityBuilder(users, ADD_COMMENTS));
-		schemeEntities.add(entityBuilder(users, BROWSE_PROJECTS));
-		schemeEntities.add(entityBuilder(users, CREATE_ATTACHMENTS));
-		schemeEntities.add(entityBuilder(users, CREATE_ISSUES));
-		schemeEntities.add(entityBuilder(users, EDIT_OWN_COMMENTS));
-		schemeEntities.add(entityBuilder(users, LINK_ISSUES));
-		schemeEntities.add(entityBuilder(users, MANAGE_WATCHERS));
-		schemeEntities.add(entityBuilder(users, VIEW_VOTERS_AND_WATCHERS));
-
-		schemeEntities.add(new SchemeEntity("lead", ADMINISTER_PROJECTS));
-		schemeEntities.add(new SchemeEntity("projectrole", administrators.getId().toString(), "MANAGE_SPRINTS_PERMISSION"));
-		schemeEntities.add(new SchemeEntity("projectrole", developers.getId().toString(), "MANAGE_SPRINTS_PERMISSION"));
 
 		Long nextId = permissionSchemeManager.getSchemeObjects()
 				.stream()
@@ -130,9 +83,9 @@ public class PermissionCreation {
 				.get()
 				.getId() + 1;
 
-		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "Default Permission Scheme", schemeEntities);
+		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "School Permission Scheme", schemeEntities);
 
-		if(permissionSchemeManager.getSchemeEntityName().equals("Default Permission Scheme")) {
+		if(!permissionSchemeManager.getSchemeObject("School Permission Scheme").getName().equals("School Permission Scheme")) {
 			permissionSchemeManager.createSchemeAndEntities(draftScheme);
 		}
 	}
