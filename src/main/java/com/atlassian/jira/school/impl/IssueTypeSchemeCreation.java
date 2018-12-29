@@ -1,6 +1,8 @@
 package com.atlassian.jira.school.impl;
 
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.fields.config.FieldConfig;
+import com.atlassian.jira.issue.fields.config.FieldConfigScheme;
 import com.atlassian.jira.issue.fields.config.manager.IssueTypeSchemeManager;
 import com.atlassian.jira.issue.issuetype.IssueType;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
@@ -31,6 +33,12 @@ public class IssueTypeSchemeCreation {
 			}
 		}
 
+		for (FieldConfigScheme its : issueTypeSchemeManager.getAllSchemes()) {
+			if(its.getName().equals("School")) {
+				return;
+			}
+		}
+
 		issueTypeSchemeManager.create("School", "School type issues", listOfIssueTypeIDs);
 	}
 
@@ -43,6 +51,12 @@ public class IssueTypeSchemeCreation {
 		for (IssueType tmpIssueType : issueTypes) {
 			if ((tmpIssueType.getName()).compareToIgnoreCase("Student Record") == 0) {
 				listOfIssueTypeIDs.add(tmpIssueType.getId());
+			}
+		}
+
+		for (FieldConfigScheme its : issueTypeSchemeManager.getAllSchemes()) {
+			if(its.getName().equals("Student")) {
+				return;
 			}
 		}
 
