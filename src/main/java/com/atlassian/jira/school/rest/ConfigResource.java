@@ -14,17 +14,19 @@ import com.atlassian.jira.school.impl.*;
 public class ConfigResource {
 
 	private GroupCreation groupCreation;
-	private IssueTypeCreation issueTypeCreation;
 	private ProjectRoleCreation projectRoleCreation;
 	private PermissionCreation permissionCreation;
+	private IssueTypeCreation issueTypeCreation;
 	private IssueTypeSchemeCreation issueTypeSchemeCreation;
+	private WorkflowCreation workflowCreation;
 
 	public ConfigResource() {
 		this.groupCreation = new GroupCreation();
-		this.issueTypeCreation = new IssueTypeCreation();
 		this.projectRoleCreation = new ProjectRoleCreation();
 		this.permissionCreation = new PermissionCreation();
+		this.issueTypeCreation = new IssueTypeCreation();
 		this.issueTypeSchemeCreation = new IssueTypeSchemeCreation();
+		this.workflowCreation = new WorkflowCreation();
 
 	}
 
@@ -37,22 +39,24 @@ public class ConfigResource {
 	@POST
 	public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException {
 
+		groupCreation.studentsGroup();
+		groupCreation.teachersGroup();
+		groupCreation.classesGroup();
+		
 		projectRoleCreation.DivisionsProjectRole();
 		projectRoleCreation.FormTeacherProjectRole();
+		
+		permissionCreation.createPermissionScheme();
 
 		issueTypeCreation.subjectIssueType();
 		issueTypeCreation.lectureIssueType();
 		issueTypeCreation.homeworkIssueType();
 		issueTypeCreation.studentRecordIssueType();
 
-		groupCreation.studentsGroup();
-		groupCreation.teachersGroup();
-		groupCreation.classesGroup();
-
 		issueTypeSchemeCreation.schoolIssueTypeScheme();
 		issueTypeSchemeCreation.studentIssueTypeScheme();
 
-		permissionCreation.createPermissionScheme();
+//		workflowCreation.createHomeworkWorkflow();
 
 		return Response.created(null).build();
 	}
