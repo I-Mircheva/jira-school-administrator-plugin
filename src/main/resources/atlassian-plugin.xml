@@ -24,7 +24,7 @@
         <description key="config-resource.description">The Config Resource Plugin</description>
     </rest>
     <!--web panel button post request-->
-    <web-panel key="menu" location="com.atlassian.jira.plugin.headernav.left.context" weight="35">
+    <web-panel key="menu-button" location="com.atlassian.jira.plugin.headernav.left.context" weight="35">
         <label> School </label>
         <resource type="velocity" name="view" location="templates/config-button.vm"/>
     </web-panel>

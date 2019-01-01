@@ -1,10 +1,11 @@
 ###disable_html_escaping()
 ## Calls the post request
 
-<li id="menu">
-    <form action="/jira/rest/school/config/1.0/setup" method="post">
-        <button id="button" class="aui-button aui-button-primary aui-style" type="submit" name="buttonconfig"
-                value="buttonconfig">
+<li id="menu-button">
+##    so it does not redirect to a new page
+    <iframe width="0" height="0" style="display: none;" border="0" name="dummyframe" id="dummyframe"></iframe>
+    <form action="/jira/rest/school/config/1.0/setup" method="post" target="dummyframe">
+        <button id="button" class="aui-button aui-button-primary aui-style" type="submit" name="buttonconfig" value="buttonconfig">
             School
         </button>
     </form>
@@ -12,13 +13,13 @@
 
 
 <script>
-    $("#button").click(function (e) {
+    $("#button").click(function(event){
         // If status is 2**
         alert("Everything created!");
         setTimeout(function () {
             location.reload();
         }, 700);
         // So it does not redirect to a new page
-        e.preventDefault();
     });
+
 </script>
