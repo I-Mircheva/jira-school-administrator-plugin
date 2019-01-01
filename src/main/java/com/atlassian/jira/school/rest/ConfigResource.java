@@ -19,6 +19,7 @@ public class ConfigResource {
 	private IssueTypeCreation issueTypeCreation;
 	private IssueTypeSchemeCreation issueTypeSchemeCreation;
 	private WorkflowCreation workflowCreation;
+	private IssueTypeScreenSchemeCreation issueTypeScreenSchemeCreation;
 
 	public ConfigResource() {
 		this.groupCreation = new GroupCreation();
@@ -27,6 +28,7 @@ public class ConfigResource {
 		this.issueTypeCreation = new IssueTypeCreation();
 		this.issueTypeSchemeCreation = new IssueTypeSchemeCreation();
 		this.workflowCreation = new WorkflowCreation();
+		this.issueTypeScreenSchemeCreation = new IssueTypeScreenSchemeCreation();
 
 	}
 
@@ -58,6 +60,9 @@ public class ConfigResource {
 
 //		workflowCreation.createHomeworkWorkflow();
 
+		issueTypeScreenSchemeCreation.createIssueTypeScreenScheme();
+
+		issueTypeScreenSchemeCreation.createIssueTypeScreenScheme();
 		return Response.created(null).build();
 	}
 }
