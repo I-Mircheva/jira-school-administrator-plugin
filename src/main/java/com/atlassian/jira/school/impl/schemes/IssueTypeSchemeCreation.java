@@ -1,4 +1,4 @@
-package com.atlassian.jira.school.impl;
+package com.atlassian.jira.school.impl.schemes;
 
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.fields.config.FieldConfig;

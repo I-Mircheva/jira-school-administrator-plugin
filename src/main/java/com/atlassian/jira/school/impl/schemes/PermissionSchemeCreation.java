@@ -1,4 +1,4 @@
-package com.atlassian.jira.school.impl;
+package com.atlassian.jira.school.impl.schemes;
 
 import com.atlassian.crowd.embedded.api.Group;
 import com.atlassian.jira.component.ComponentAccessor;
@@ -15,13 +15,13 @@ import java.util.Collection;
 import static com.atlassian.jira.permission.ProjectPermissions.*;
 
 @Scanned
-public class PermissionCreation {
+public class PermissionSchemeCreation {
 
 	private PermissionSchemeManager permissionSchemeManager;
 //	private static final String GROUP_PERMISSION_TYPE = "group";
 	private GroupManager groupManager;
 
-	public PermissionCreation() {
+	public PermissionSchemeCreation() {
 		permissionSchemeManager = ComponentAccessor.getPermissionSchemeManager();
 		groupManager = ComponentAccessor.getGroupManager();
 	}

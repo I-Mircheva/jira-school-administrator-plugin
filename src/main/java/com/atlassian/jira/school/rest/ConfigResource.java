@@ -5,31 +5,37 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.ofbiz.core.entity.GenericEntityException;
+
 import com.atlassian.crowd.exception.OperationNotPermittedException;
 import com.atlassian.crowd.exception.embedded.InvalidGroupException;
-import com.atlassian.jira.permission.PermissionScheme;
 import com.atlassian.jira.school.impl.*;
+import com.atlassian.jira.school.impl.schemes.IssueTypeSchemeCreation;
+import com.atlassian.jira.school.impl.schemes.PermissionSchemeCreation;
+import com.atlassian.jira.school.impl.schemes.WorkflowSchemeCreation;
 
 @Path("/setup")
 public class ConfigResource {
 
 	private GroupCreation groupCreation;
 	private ProjectRoleCreation projectRoleCreation;
-	private PermissionCreation permissionCreation;
 	private IssueTypeCreation issueTypeCreation;
-	private IssueTypeSchemeCreation issueTypeSchemeCreation;
 	private WorkflowCreation workflowCreation;
-	private IssueTypeScreenSchemeCreation issueTypeScreenSchemeCreation;
+
+	private PermissionSchemeCreation permissionSchemeCreation;
+	private IssueTypeSchemeCreation issueTypeSchemeCreation;
+	private WorkflowSchemeCreation workflowSchemeCreation;
 
 	public ConfigResource() {
 		this.groupCreation = new GroupCreation();
 		this.projectRoleCreation = new ProjectRoleCreation();
-		this.permissionCreation = new PermissionCreation();
 		this.issueTypeCreation = new IssueTypeCreation();
-		this.issueTypeSchemeCreation = new IssueTypeSchemeCreation();
 		this.workflowCreation = new WorkflowCreation();
-		this.issueTypeScreenSchemeCreation = new IssueTypeScreenSchemeCreation();
-
+		
+		this.permissionSchemeCreation = new PermissionSchemeCreation();	
+		this.issueTypeSchemeCreation = new IssueTypeSchemeCreation();
+		this.workflowSchemeCreation = new WorkflowSchemeCreation();
+		
 	}
 
 	@GET
@@ -39,30 +45,31 @@ public class ConfigResource {
 	}
 
 	@POST
-	public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException {
+	public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException, GenericEntityException {
 
-		groupCreation.studentsGroup();
-		groupCreation.teachersGroup();
-		groupCreation.classesGroup();
-		
-		projectRoleCreation.DivisionsProjectRole();
-		projectRoleCreation.FormTeacherProjectRole();
-		
-		permissionCreation.createPermissionScheme();
-
-		issueTypeCreation.subjectIssueType();
-		issueTypeCreation.lectureIssueType();
-		issueTypeCreation.homeworkIssueType();
-		issueTypeCreation.studentRecordIssueType();
-
-		issueTypeSchemeCreation.schoolIssueTypeScheme();
-		issueTypeSchemeCreation.studentIssueTypeScheme();
+//		groupCreation.studentsGroup();
+//		groupCreation.teachersGroup();
+//		groupCreation.classesGroup();
+//		
+//		projectRoleCreation.DivisionsProjectRole();
+//		projectRoleCreation.FormTeacherProjectRole();
+//		
+//		permissionSchemeCreation.createPermissionScheme();
+//
+//		issueTypeCreation.subjectIssueType();
+//		issueTypeCreation.lectureIssueType();
+//		issueTypeCreation.homeworkIssueType();
+//		issueTypeCreation.studentRecordIssueType();
+//
+//		issueTypeSchemeCreation.schoolIssueTypeScheme();
+//		issueTypeSchemeCreation.studentIssueTypeScheme();
 
 //		workflowCreation.createHomeworkWorkflow();
+		
+		workflowSchemeCreation.assigneHomeworkIssueTypeToHomeworkWorkflow();
 
-		issueTypeScreenSchemeCreation.createIssueTypeScreenScheme();
-
-		issueTypeScreenSchemeCreation.createIssueTypeScreenScheme();
+//		issueTypeScreenSchemeCreation.createIssueTypeScreenScheme();
+		
 		return Response.created(null).build();
 	}
 }
