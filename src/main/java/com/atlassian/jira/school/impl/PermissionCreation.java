@@ -85,7 +85,7 @@ public class PermissionCreation {
 
 		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "School Permission Scheme", schemeEntities);
 
-		if(!permissionSchemeManager.getSchemeObject("School Permission Scheme").getName().equals("School Permission Scheme")) {
+		if(permissionSchemeManager.getSchemeObject("School Permission Scheme") == null) {
 			permissionSchemeManager.createSchemeAndEntities(draftScheme);
 		}
 	}
