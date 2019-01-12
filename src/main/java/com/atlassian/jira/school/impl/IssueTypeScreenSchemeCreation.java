@@ -2,7 +2,13 @@ package com.atlassian.jira.school.impl;
 
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.config.ConstantsManager;
-import com.atlassian.jira.issue.fields.Field;
+import com.atlassian.jira.config.IssueTypeManager;
+import com.atlassian.jira.issue.CustomFieldManager;
+import com.atlassian.jira.issue.context.GlobalIssueContext;
+import com.atlassian.jira.issue.context.JiraContextNode;
+import com.atlassian.jira.issue.customfields.CustomFieldSearcher;
+import com.atlassian.jira.issue.customfields.CustomFieldType;
+import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.FieldManager;
 import com.atlassian.jira.issue.fields.OrderableField;
 import com.atlassian.jira.issue.fields.screen.*;
@@ -11,7 +17,11 @@ import com.atlassian.jira.issue.fields.screen.issuetype.*;
 import com.atlassian.jira.issue.issuetype.IssueType;
 import com.atlassian.jira.issue.operation.IssueOperations;
 import com.atlassian.jira.project.Project;
+import org.ofbiz.core.entity.GenericEntityException;
 import org.ofbiz.core.entity.GenericValue;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public class IssueTypeScreenSchemeCreation {
@@ -23,6 +33,8 @@ public class IssueTypeScreenSchemeCreation {
 	private FieldScreenSchemeManager fieldScreenSchemeManager;
 	private FieldManager fieldManager;
 	private ConstantsManager constantsManager;
+	private CustomFieldManager customFieldManager;
+	private IssueTypeManager issueTypeManager;
 
 
 	public IssueTypeScreenSchemeCreation() {
@@ -31,28 +43,54 @@ public class IssueTypeScreenSchemeCreation {
 		this.fieldScreenSchemeManager = ComponentAccessor.getComponent(FieldScreenSchemeManager.class);
 		this.fieldManager = ComponentAccessor.getFieldManager();
 		this.constantsManager = ComponentAccessor.getConstantsManager();
+		this.customFieldManager = ComponentAccessor.getCustomFieldManager();
+		this.issueTypeManager = ComponentAccessor.getComponent(IssueTypeManager.class);
 	}
 
-	public void createIssueTypeScreenScheme() {
+	public void createIssueTypeScreenScheme() throws GenericEntityException {
+
+		Collection<IssueTypeScreenScheme> allIssueTypeScreenManager = issueTypeScreenSchemeManager.getIssueTypeScreenSchemes();
+
+		for(IssueTypeScreenScheme tmp : allIssueTypeScreenManager) {
+			if(tmp.getName().equals("Teacher Issue Type Screen Scheme")) {
+				return;
+			}
+		}
 
 		// create screen
 		FieldScreen screenCreateIssueType = new FieldScreenImpl(fieldScreenManager);
-		screenCreateIssueType.setName("CustomScreen");
-		screenCreateIssueType.setDescription("A screen create issue");
+		screenCreateIssueType.setName("Custom Teacher Screen");
+		screenCreateIssueType.setDescription("A screen for issue");
 		fieldScreenManager.createFieldScreen(screenCreateIssueType);
 
 
 		// create tab
 		FieldScreenTab myTab = screenCreateIssueType.addTab("Tab");
 
-		// add field to tab
-		//		for (Field field : fieldManager.getAllSearchableFields()) {
-		//			System.out.println("+=++++++++++++++++++++++++++++++++++++");
-		//			System.out.println(field.getId());
-		//			System.out.println(field.getName());
-		//			System.out.println(field.getNameKey());
-		//		}
-		OrderableField fieldTeacher = fieldManager.getCustomField("customfield_10000"); // e.g. "customfield_ID!"
+		// Create custom field
+		CustomFieldType textFieldType = customFieldManager.getCustomFieldType("com.atlassian.jira.school.jira-school-plugin:teachertextfield");
+		CustomFieldSearcher textFieldSearcher = customFieldManager.getCustomFieldSearcher("com.atlassian.jira.school.jira-school-plugin:teachertextfieldsearcher");
+		List<JiraContextNode> contexts = new ArrayList<>();
+		contexts.add(GlobalIssueContext.getInstance());
+
+		//Create a list of issue types for which the custom field needs to be available
+		List<IssueType> issueTypes = new ArrayList<>();
+		issueTypes.add(null);
+
+
+		customFieldManager.createCustomField("Teacher", "Teachers Field", textFieldType,
+				textFieldSearcher,
+				contexts,
+				issueTypes);
+
+		Collection<CustomField> allTeachersCustomFields =  customFieldManager.getCustomFieldObjectsByName("Teacher");
+		String customFieldID = null;
+		// Get last created teacher cf
+		for (CustomField tmp : allTeachersCustomFields){
+			customFieldID = tmp.getId();
+		}
+
+		OrderableField fieldTeacher = fieldManager.getCustomField(customFieldID); // e.g. "customfield_ID!"
 		OrderableField fieldSummary = fieldManager.getOrderableField("summary"); // e.g. "customfield_ID!"
 		myTab.addFieldScreenLayoutItem(fieldTeacher.getId());
 		myTab.addFieldScreenLayoutItem(fieldSummary.getId());
@@ -60,11 +98,11 @@ public class IssueTypeScreenSchemeCreation {
 
 		// add screen to scheme
 
-		// get existing scheme...
+		// get existing scheme... NO NEED
 		//		FieldScreenScheme myScheme = fieldScreenSchemeManager.getFieldScreenScheme(mySchemeId);
 		//		fieldScreenSchemeManager.
 
-		// ... or create new scheme
+		// Create new scheme
 
 		FieldScreenScheme myScheme = new FieldScreenSchemeImpl(fieldScreenSchemeManager);
 		myScheme.setName("Teacher scheme");
@@ -89,7 +127,6 @@ public class IssueTypeScreenSchemeCreation {
 		myScheme.addFieldScreenSchemeItem(mySchemeItemView);
 
 
-
 		// create issueTypeScreenScheme
 		IssueTypeScreenScheme myIssueTypeScreenScheme = new IssueTypeScreenSchemeImpl(issueTypeScreenSchemeManager);
 		myIssueTypeScreenScheme.setName("Teacher Issue Type Screen Scheme");
@@ -100,25 +137,10 @@ public class IssueTypeScreenSchemeCreation {
 		IssueTypeScreenSchemeEntity myEntity = new IssueTypeScreenSchemeEntityImpl(
 				issueTypeScreenSchemeManager, (GenericValue) null, fieldScreenSchemeManager, constantsManager);
 
-		// try and get issue type
-		//		System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-		//		System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-		//		System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-		//		System.out.println((IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[0]);
-		//		System.out.println((IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[1]);
-		//		System.out.println((IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[2]);
-		//		System.out.println((IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[3]);
-		//		System.out.println((IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[4]);
-		//		System.out.println((IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[5]);
-		//		System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-		//		System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-		//		System.out.println("++++++++++++++++++++++++++++++++++++++++++");
-		// TODO Fix magic numbers
-
-		IssueType issueType1 = (IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[0];
-		IssueType issueType2 = (IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[1];
-		IssueType issueType3 = (IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[2];
-		IssueType issueType4 = (IssueType) ComponentAccessor.getConstantsManager().getAllIssueTypeObjects().toArray()[4];
+		IssueType issueType1 = issueTypeManager.getIssueType("Subject");
+		IssueType issueType2 = issueTypeManager.getIssueType("Lecture");
+		IssueType issueType3 = issueTypeManager.getIssueType("Homework");
+		IssueType issueType4 = issueTypeManager.getIssueType("Student Record");
 
 		addEntity(myScheme, myIssueTypeScreenScheme, myEntity, issueType1);
 		addEntity(myScheme, myIssueTypeScreenScheme, myEntity, issueType2);
