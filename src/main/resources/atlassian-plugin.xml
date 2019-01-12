@@ -29,6 +29,22 @@
         <resource type="velocity" name="view" location="templates/config-button.vm"/>
     </web-panel>
 
+	<project-blueprint key="my-project-template" weight="90">
+        <label key="my.project.template.name"/>
+        <projectTypeKey>business</projectTypeKey>
+        <description key="my.project.template.description"/>
+        <longDescription key="my.project.template.description.long"/>
+
+        <infoPage soy-template="JIRA.Templates.ProjectTemplates.Tutorial.renderMyProjectTemplateExplanation" />
+        
+        <resource type="i18n" name="i18n" location="jira-shool-plugin"/>
+        
+        <add-project>
+            <hook class="com.atlassian.jira.school.impl.AddProjectHookClass"/>
+        </add-project>
+        
+    </project-blueprint>
+
     <customfield-type name="Teacher Custom Field" i18n-name-key="jira-custom-field.name" key="teachertextfield" class="com.atlassian.jira.school.customfields.CustomFieldCreation">
         <description>A text field only editable by those within the Teachers group</description>
         <resource type="velocity" name="view" location="templates/plugins/fields/view/view-basictext.vm"/>

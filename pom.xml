@@ -29,7 +29,12 @@
             <version>${jira.version}</version>
             <scope>provided</scope>
         </dependency>
-
+		<dependency>
+		    <groupId>com.atlassian.jira.plugins</groupId>
+		    <artifactId>project-templates-api</artifactId>
+		    <version>6.2.0</version>
+		    <scope>provided</scope>
+		</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
