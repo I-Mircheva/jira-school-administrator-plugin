@@ -7,6 +7,7 @@ import com.atlassian.jira.scheme.Scheme;
 import com.atlassian.jira.scheme.SchemeEntity;
 import com.atlassian.jira.security.groups.GroupManager;
 import com.atlassian.jira.security.plugin.ProjectPermissionKey;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,11 +19,12 @@ import static com.atlassian.jira.permission.ProjectPermissions.*;
 public class PermissionSchemeCreation {
 
 	private PermissionSchemeManager permissionSchemeManager;
-//	private static final String GROUP_PERMISSION_TYPE = "group";
+	private ApplicationUser applicationUser;
 	private GroupManager groupManager;
 
 	public PermissionSchemeCreation() {
 		permissionSchemeManager = ComponentAccessor.getPermissionSchemeManager();
+		applicationUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
 		groupManager = ComponentAccessor.getGroupManager();
 	}
 
@@ -41,6 +43,11 @@ public class PermissionSchemeCreation {
 
 		Collection<SchemeEntity> schemeEntities = new ArrayList<>();
 
+		if(applicationUser.getName().equals("admin")) {
+			schemeEntities.add(new SchemeEntity("user", applicationUser.getName(), ADMINISTER_PROJECTS));
+			schemeEntities.add(new SchemeEntity("user", applicationUser.getName(), BROWSE_PROJECTS));
+		}
+		
 		schemeEntities.add(entityBuilder(teachers, ADD_COMMENTS));
 		schemeEntities.add(entityBuilder(teachers, ADMINISTER_PROJECTS));
 		schemeEntities.add(entityBuilder(teachers, ASSIGNABLE_USER));

@@ -13,6 +13,8 @@ import com.atlassian.jira.issue.fields.FieldManager;
 import com.atlassian.jira.issue.fields.config.FieldConfigScheme;
 import com.atlassian.jira.issue.fields.config.manager.FieldConfigSchemeManager;
 import com.atlassian.jira.issue.fields.config.manager.IssueTypeSchemeManager;
+import com.atlassian.jira.permission.PermissionSchemeManager;
+import com.atlassian.jira.permission.PermissionSchemeService;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.project.template.hook.AddProjectHook;
@@ -20,6 +22,7 @@ import com.atlassian.jira.project.template.hook.ConfigureData;
 import com.atlassian.jira.project.template.hook.ConfigureResponse;
 import com.atlassian.jira.project.template.hook.ValidateData;
 import com.atlassian.jira.project.template.hook.ValidateResponse;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.workflow.AssignableWorkflowScheme;
 import com.atlassian.jira.workflow.WorkflowSchemeManager;
 import com.atlassian.jira.workflow.migration.AssignableWorkflowSchemeMigrationHelper;
@@ -40,7 +43,7 @@ public class AddProjectHookClass implements AddProjectHook {
 	public ConfigureResponse configure(final ConfigureData configureData) {
 		ConfigureResponse configureResponse = ConfigureResponse.create();
 
-		//assign workflow scheme
+		// assign workflow scheme
 
 		Project project = configureData.project();
 
@@ -58,29 +61,40 @@ public class AddProjectHookClass implements AddProjectHook {
 			e.printStackTrace();
 		}
 
-		//assign issue type scheme
+		// assign issue type scheme
 
 		IssueTypeSchemeManager issueTypeSchemeManager = ComponentAccessor.getIssueTypeSchemeManager();
-		FieldConfigSchemeManager schemeManager = ComponentAccessor.getFieldConfigSchemeManager();
+		FieldConfigSchemeManager fieldConfigSchemeManager = ComponentAccessor.getFieldConfigSchemeManager();
 		ProjectManager projectManager = ComponentAccessor.getProjectManager();
 		FieldManager fieldManager = ComponentAccessor.getFieldManager();
 
-		FieldConfigScheme issueTypeScheme1 = null;
+		FieldConfigScheme issueTypeScheme = null;
 
 		List<FieldConfigScheme> list = issueTypeSchemeManager.getAllSchemes();
-		for(int i = 0; i < list.size(); i++) {
-			FieldConfigScheme issueTypeScheme = list.get(i);
-			if(issueTypeScheme.getName().equals("School")) issueTypeScheme1 = issueTypeScheme;
+		for (int i = 0; i < list.size(); i++) {
+			FieldConfigScheme tempIssueTypeScheme = list.get(i);
+			if (tempIssueTypeScheme.getName().equals("School")) issueTypeScheme = tempIssueTypeScheme;
 		}
 
-	    List<Long> projectIds = new ArrayList<>(issueTypeScheme1.getAssociatedProjectIds());
-	    projectIds.add(project.getId());
+		List<Long> projectIds = new ArrayList<>(issueTypeScheme.getAssociatedProjectIds());
+		projectIds.add(project.getId());
 
-	    List<JiraContextNode> contexts = CustomFieldUtils.buildJiraIssueContexts(false,
-	    		projectIds.toArray(new Long[0]), projectManager);
+		List<JiraContextNode> contexts = CustomFieldUtils.buildJiraIssueContexts(false, projectIds.toArray(new Long[0]),
+				projectManager);
 
-	    schemeManager.updateFieldConfigScheme(issueTypeScheme1, contexts,
-	    		fieldManager.getConfigurableField(IssueFieldConstants.ISSUE_TYPE));
+		fieldConfigSchemeManager.updateFieldConfigScheme(issueTypeScheme, contexts,
+				fieldManager.getConfigurableField(IssueFieldConstants.ISSUE_TYPE));
+
+		// assigne permission scheme
+
+		PermissionSchemeManager permissionSchemeManager = ComponentAccessor.getPermissionSchemeManager();
+		PermissionSchemeService permissionSchemeService = ComponentAccessor.getComponent(PermissionSchemeService.class);
+		ApplicationUser applicationUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+
+		List<Long> schemeIds = new ArrayList<>();
+		schemeIds.add(permissionSchemeManager.getSchemeObject("School Permission Scheme").getId());
+
+		permissionSchemeService.assignPermissionSchemeToProject(applicationUser, schemeIds.get(0), projectIds.get(0));
 
 		return configureResponse;
 	}
