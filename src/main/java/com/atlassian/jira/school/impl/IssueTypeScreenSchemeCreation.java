@@ -134,30 +134,35 @@ public class IssueTypeScreenSchemeCreation {
 		issueTypeScreenSchemeManager.createIssueTypeScreenScheme(myIssueTypeScreenScheme);
 
 		// add scheme to issueTypeScreenScheme
-		IssueTypeScreenSchemeEntity myEntity = new IssueTypeScreenSchemeEntityImpl(
-				issueTypeScreenSchemeManager, (GenericValue) null, fieldScreenSchemeManager, constantsManager);
+		IssueTypeScreenSchemeEntity myEntity = null;
 
-		IssueType issueType1 = issueTypeManager.getIssueType("Subject");
-		IssueType issueType2 = issueTypeManager.getIssueType("Lecture");
-		IssueType issueType3 = issueTypeManager.getIssueType("Homework");
-		IssueType issueType4 = issueTypeManager.getIssueType("Student Record");
+		Collection<IssueType> coll = issueTypeManager.getIssueTypes();
 
-		addEntity(myScheme, myIssueTypeScreenScheme, myEntity, issueType1);
-		addEntity(myScheme, myIssueTypeScreenScheme, myEntity, issueType2);
-		addEntity(myScheme, myIssueTypeScreenScheme, myEntity, issueType3);
-		addEntity(myScheme, myIssueTypeScreenScheme, myEntity, issueType4);
-
-
-		// assign to project
-		// TODO Which projects
-		Project project = ComponentAccessor.getProjectManager().getProjects().get(0);
-
-		if(project != null) {
-			issueTypeScreenSchemeManager.addSchemeAssociation(project, myIssueTypeScreenScheme);
+		for(IssueType tmp : coll) {
+			System.out.println(tmp.getName());
+			if(tmp.getName().equals("Subject")) {
+				addEntity(myScheme, myIssueTypeScreenScheme, myEntity, tmp);
+			} else if(tmp.getName().equals("Lecture")) {
+				addEntity(myScheme, myIssueTypeScreenScheme, myEntity, tmp);
+			} else if(tmp.getName().equals("Homework")) {
+				addEntity(myScheme, myIssueTypeScreenScheme, myEntity, tmp);
+			}
 		}
+
+		//      // assign to project
+		//      // TODO Which projects
+		//
+		//      Project project = ComponentAccessor.getProjectManager().getProjects().get(0);
+		//
+		//      if(project != null) {
+		//          issueTypeScreenSchemeManager.addSchemeAssociation(project, myIssueTypeScreenScheme);
+		//      }
+
 	}
 
 	private void addEntity(FieldScreenScheme myScheme, IssueTypeScreenScheme myIssueTypeScreenScheme, IssueTypeScreenSchemeEntity myEntity, IssueType issueType) {
+		myEntity = new IssueTypeScreenSchemeEntityImpl(issueTypeScreenSchemeManager,
+				fieldScreenSchemeManager, constantsManager);
 		myEntity.setIssueTypeId(issueType != null ? issueType.getId() : null); // an entity can be for all IssueTypes (-&gt; null), or just for 1
 		myEntity.setFieldScreenScheme(myScheme);
 		myIssueTypeScreenScheme.addEntity(myEntity);
