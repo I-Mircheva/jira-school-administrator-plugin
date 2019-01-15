@@ -1,6 +1,8 @@
 package com.atlassian.jira.school.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.ofbiz.core.entity.GenericEntityException;
@@ -13,6 +15,9 @@ import com.atlassian.jira.issue.fields.FieldManager;
 import com.atlassian.jira.issue.fields.config.FieldConfigScheme;
 import com.atlassian.jira.issue.fields.config.manager.FieldConfigSchemeManager;
 import com.atlassian.jira.issue.fields.config.manager.IssueTypeSchemeManager;
+import com.atlassian.jira.issue.fields.screen.issuetype.IssueTypeScreenScheme;
+import com.atlassian.jira.issue.fields.screen.issuetype.IssueTypeScreenSchemeManager;
+import com.atlassian.jira.issue.issuetype.IssueType;
 import com.atlassian.jira.permission.PermissionSchemeManager;
 import com.atlassian.jira.permission.PermissionSchemeService;
 import com.atlassian.jira.project.Project;
@@ -84,8 +89,22 @@ public class AddProjectHookClass implements AddProjectHook {
 
 		fieldConfigSchemeManager.updateFieldConfigScheme(issueTypeScheme, contexts,
 				fieldManager.getConfigurableField(IssueFieldConstants.ISSUE_TYPE));
-
-		// assigne permission scheme
+		
+		// assign issue type screen scheme
+		
+		IssueTypeScreenSchemeManager issueTypeScreenSchemeManager = ComponentAccessor
+				.getIssueTypeScreenSchemeManager();
+				
+		Collection<IssueTypeScreenScheme> coll = issueTypeScreenSchemeManager.getIssueTypeScreenSchemes();
+		
+		for(Iterator<IssueTypeScreenScheme> iterator = coll.iterator(); iterator.hasNext(); ) {
+			IssueTypeScreenScheme screenScheme = (IssueTypeScreenScheme) iterator.next();
+			if (screenScheme.getName().equals("Teacher Issue Type Screen Scheme")) {
+				issueTypeScreenSchemeManager.addSchemeAssociation(project, screenScheme);
+			}
+		}
+				
+		// assign permission scheme
 
 		PermissionSchemeManager permissionSchemeManager = ComponentAccessor.getPermissionSchemeManager();
 		PermissionSchemeService permissionSchemeService = ComponentAccessor.getComponent(PermissionSchemeService.class);
@@ -97,5 +116,6 @@ public class AddProjectHookClass implements AddProjectHook {
 		permissionSchemeService.assignPermissionSchemeToProject(applicationUser, schemeIds.get(0), projectIds.get(0));
 
 		return configureResponse;
+		
 	}
 }
