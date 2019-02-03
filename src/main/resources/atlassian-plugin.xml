@@ -37,7 +37,7 @@
 
         <infoPage soy-template="JIRA.Templates.ProjectTemplates.Tutorial.renderMyProjectTemplateExplanation" />
         
-        <resource type="i18n" name="i18n" location="jira-shool-plugin"/>
+        <resource type="i18n" name="i18n" location="jira-school-plugin"/>
         
         <add-project>
             <hook class="com.atlassian.jira.school.impl.AddProjectHookClass"/>
@@ -51,7 +51,7 @@
         <resource type="velocity" name="edit" location="templates/edit-teacher-field.vm"/>
         <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
         <!--TODO FIX SCHOOL NAME-->
-        <resource type="i18n" name="i18n" location="jira-shool-plugin"/>
+        <resource type="i18n" name="i18n" location="jira-school-plugin"/>
     </customfield-type>
 
     <customfield-type name="Form Teacher Custom Field" i18n-name-key="jira-custom-field.name2" key="formteachertextfield" class="com.atlassian.jira.school.customfields.CustomFieldCreation">
@@ -60,7 +60,7 @@
         <resource type="velocity" name="edit" location="templates/edit-form-teacher-field.vm"/>
         <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
         <!--TODO FIX SCHOOL NAME-->
-        <resource type="i18n" name="i18n" location="jira-shool-plugin"/>
+        <resource type="i18n" name="i18n" location="jira-school-plugin"/>
     </customfield-type>
 
 </atlassian-plugin>
