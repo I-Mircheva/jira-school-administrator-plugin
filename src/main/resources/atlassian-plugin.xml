@@ -50,7 +50,6 @@
         <resource type="velocity" name="view" location="templates/plugins/fields/view/view-basictext.vm"/>
         <resource type="velocity" name="edit" location="templates/edit-teacher-field.vm"/>
         <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
-        <!--TODO FIX SCHOOL NAME-->
         <resource type="i18n" name="i18n" location="jira-school-plugin"/>
     </customfield-type>
 
@@ -59,7 +58,6 @@
         <resource type="velocity" name="view" location="templates/plugins/fields/view/view-basictext.vm"/>
         <resource type="velocity" name="edit" location="templates/edit-form-teacher-field.vm"/>
         <resource type="velocity" name="xml" location="templates/plugins/fields/xml/xml-basictext.vm"/>
-        <!--TODO FIX SCHOOL NAME-->
         <resource type="i18n" name="i18n" location="jira-school-plugin"/>
     </customfield-type>
 

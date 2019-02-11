@@ -5,6 +5,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.atlassian.jira.school.impl.schemes.IssueTypeScreenSchemeCreation;
 import org.ofbiz.core.entity.GenericEntityException;
 
 import com.atlassian.crowd.exception.OperationNotPermittedException;
@@ -24,6 +25,7 @@ public class ConfigResource {
 
 	private PermissionSchemeCreation permissionSchemeCreation;
 	private IssueTypeSchemeCreation issueTypeSchemeCreation;
+	private IssueTypeScreenSchemeCreation issueTypeScreenSchemeCreation;
 	private WorkflowSchemeCreation workflowSchemeCreation;
 
 	public ConfigResource() {
@@ -34,6 +36,7 @@ public class ConfigResource {
 		
 		this.permissionSchemeCreation = new PermissionSchemeCreation();	
 		this.issueTypeSchemeCreation = new IssueTypeSchemeCreation();
+		this.issueTypeScreenSchemeCreation = new IssueTypeScreenSchemeCreation();
 		this.workflowSchemeCreation = new WorkflowSchemeCreation();
 		
 	}
@@ -47,28 +50,28 @@ public class ConfigResource {
 	@POST
 	public Response setupInstance() throws OperationNotPermittedException, InvalidGroupException, GenericEntityException {
 
-//		groupCreation.studentsGroup();
-//		groupCreation.teachersGroup();
-//		groupCreation.classesGroup();
-//		
-//		projectRoleCreation.DivisionsProjectRole();
-//		projectRoleCreation.FormTeacherProjectRole();
-//		
-//		permissionSchemeCreation.createPermissionScheme();
-//
-//		issueTypeCreation.subjectIssueType();
-//		issueTypeCreation.lectureIssueType();
-//		issueTypeCreation.homeworkIssueType();
-//		issueTypeCreation.studentRecordIssueType();
-//
-//		issueTypeSchemeCreation.schoolIssueTypeScheme();
-//		issueTypeSchemeCreation.studentIssueTypeScheme();
+		groupCreation.studentsGroup();
+		groupCreation.teachersGroup();
+		groupCreation.classesGroup();
 
-//		workflowCreation.createHomeworkWorkflow();
+		projectRoleCreation.DivisionsProjectRole();
+		projectRoleCreation.FormTeacherProjectRole();
+
+		permissionSchemeCreation.createPermissionScheme();
+
+		issueTypeCreation.subjectIssueType();
+		issueTypeCreation.lectureIssueType();
+		issueTypeCreation.homeworkIssueType();
+		issueTypeCreation.studentRecordIssueType();
+
+		issueTypeSchemeCreation.schoolIssueTypeScheme();
+		issueTypeSchemeCreation.studentIssueTypeScheme();
+
+		workflowCreation.createHomeworkWorkflow();
 		
 		workflowSchemeCreation.assigneHomeworkIssueTypeToHomeworkWorkflow();
 
-//		issueTypeScreenSchemeCreation.createIssueTypeScreenScheme();
+		issueTypeScreenSchemeCreation.createIssueTypeScreenScheme();
 		
 		return Response.created(null).build();
 	}
