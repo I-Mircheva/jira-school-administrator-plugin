@@ -6,6 +6,7 @@ import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.security.groups.GroupManager;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 
+// We create group not only for permission management but also for separating homeworks, lectures and so on
 @Scanned
 public class GroupCreation {
 
@@ -27,6 +28,7 @@ public class GroupCreation {
 		}
 	}
 
+	// We create group for each year
 	public void classesGroup() throws OperationNotPermittedException, InvalidGroupException {
 		for (int i = 1; i <= 12; i++) {
 			if (i == 1 && groupDoesNotExist(i + "st grade")) {
@@ -39,6 +41,7 @@ public class GroupCreation {
 		}
 	}
 
+	// Check so we do not create a few groups with the same name as this is allowed in Jira
 	private boolean groupDoesNotExist(String arg) {
 		return (groupManager.getGroup(arg) == null);
 	}

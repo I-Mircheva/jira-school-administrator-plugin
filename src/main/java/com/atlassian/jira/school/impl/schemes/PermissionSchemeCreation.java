@@ -12,9 +12,9 @@ import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
 import static com.atlassian.jira.permission.ProjectPermissions.*;
 
+// The permission scheme is used to give certain users and groups their permissions 
 @Scanned
 public class PermissionSchemeCreation {
 
@@ -24,10 +24,13 @@ public class PermissionSchemeCreation {
 
 	public PermissionSchemeCreation() {
 		permissionSchemeManager = ComponentAccessor.getPermissionSchemeManager();
+		// Get the current user
 		applicationUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+		// Access the groups via the manager
 		groupManager = ComponentAccessor.getGroupManager();
 	}
 
+	// The scheme consists of entities which need to be created individually 
 	private SchemeEntity entityBuilder(Group group, ProjectPermissionKey permissionKey) {
 		return new SchemeEntity(
 				"group",
@@ -90,6 +93,7 @@ public class PermissionSchemeCreation {
 				.get()
 				.getId() + 1;
 
+		// We put all entities in one scheme so we can easily add it to a project
 		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "School Permission Scheme", schemeEntities);
 
 		if(permissionSchemeManager.getSchemeObject("School Permission Scheme") == null) {

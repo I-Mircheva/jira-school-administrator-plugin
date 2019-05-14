@@ -1,7 +1,6 @@
 package com.atlassian.jira.school.impl.schemes;
 
 import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.fields.config.FieldConfigScheme;
 import com.atlassian.jira.issue.fields.config.manager.IssueTypeSchemeManager;
 import com.atlassian.jira.issue.issuetype.IssueType;
@@ -16,9 +15,12 @@ public class IssueTypeSchemeCreation {
 	private IssueTypeSchemeManager issueTypeSchemeManager;
 
 	public IssueTypeSchemeCreation() {
+
+		// IssueTypeSchemeManager allows us to use build in functions
 		issueTypeSchemeManager = ComponentAccessor.getIssueTypeSchemeManager();
 	}
 
+	// We go trough all issue types and add them in the School scheme accordingly  
 	public void schoolIssueTypeScheme() {
 
 		LinkedList<String> listOfIssueTypeIDs = new LinkedList<>();
@@ -42,6 +44,7 @@ public class IssueTypeSchemeCreation {
 		issueTypeSchemeManager.create("School", "School type issues", listOfIssueTypeIDs);
 	}
 
+	// Identical to the above function
 	public void studentIssueTypeScheme() {
 
 		LinkedList<String> listOfIssueTypeIDs = new LinkedList<>();

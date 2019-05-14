@@ -8,6 +8,8 @@ import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.JiraImport;
 
+// This class is created following https://developer.atlassian.com/server/jira/platform/creating-a-custom-field-type
+
 @Scanned
 public class CustomFieldCreation extends GenericTextCFType {
 
@@ -16,6 +18,9 @@ public class CustomFieldCreation extends GenericTextCFType {
 			@JiraImport GenericConfigManager genericConfigManager,
 			@JiraImport TextFieldCharacterLengthValidator textFieldCharacterLengthValidator,
 			@JiraImport JiraAuthenticationContext jiraAuthenticationContext) {
+
+		// The GenericTextCFType class stores and retrieves field values as strings which is used in the custom field functionality 
+
 		super(customFieldValuePersister, genericConfigManager, textFieldCharacterLengthValidator , jiraAuthenticationContext);
 	}
 }

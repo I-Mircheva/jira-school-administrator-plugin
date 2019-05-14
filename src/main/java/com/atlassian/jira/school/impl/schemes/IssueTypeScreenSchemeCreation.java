@@ -23,12 +23,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
+// The use of screens is to add the fields and tabs essential for your needs
 public class IssueTypeScreenSchemeCreation {
 
 	private IssueTypeScreenSchemeManager issueTypeScreenSchemeManager;
 
-	// component dependencies, get via Constructor Injection
+	// Component dependencies, get via Constructor Injection
 	private FieldScreenManager fieldScreenManager;
 	private FieldScreenSchemeManager fieldScreenSchemeManager;
 	private FieldManager fieldManager;
@@ -57,14 +57,14 @@ public class IssueTypeScreenSchemeCreation {
 			}
 		}
 
-		// create screen
+		// Create screen
 		FieldScreen screenCreateIssueType = new FieldScreenImpl(fieldScreenManager);
 		screenCreateIssueType.setName("Custom Teacher Screen");
 		screenCreateIssueType.setDescription("A screen for issue");
 		fieldScreenManager.createFieldScreen(screenCreateIssueType);
 
 
-		// create tab
+		// Create tab
 		FieldScreenTab myTab = screenCreateIssueType.addTab("Tab");
 
 		// Create custom field
@@ -73,7 +73,7 @@ public class IssueTypeScreenSchemeCreation {
 		List<JiraContextNode> contexts = new ArrayList<>();
 		contexts.add(GlobalIssueContext.getInstance());
 
-		//Create a list of issue types for which the custom field needs to be available
+		// Create a list of issue types for which the custom field needs to be available
 		List<IssueType> issueTypes = new ArrayList<>();
 		issueTypes.add(null);
 
@@ -85,6 +85,7 @@ public class IssueTypeScreenSchemeCreation {
 
 		Collection<CustomField> allTeachersCustomFields =  customFieldManager.getCustomFieldObjectsByName("Teacher");
 		String customFieldID = null;
+
 		// Get last created teacher cf
 		for (CustomField tmp : allTeachersCustomFields){
 			customFieldID = tmp.getId();
@@ -95,22 +96,13 @@ public class IssueTypeScreenSchemeCreation {
 		myTab.addFieldScreenLayoutItem(fieldTeacher.getId());
 		myTab.addFieldScreenLayoutItem(fieldSummary.getId());
 
-
-		// add screen to scheme
-
-		// get existing scheme... NO NEED
-		//		FieldScreenScheme myScheme = fieldScreenSchemeManager.getFieldScreenScheme(mySchemeId);
-		//		fieldScreenSchemeManager.
-
 		// Create new scheme
-
 		FieldScreenScheme myScheme = new FieldScreenSchemeImpl(fieldScreenSchemeManager);
 		myScheme.setName("Teacher scheme");
 		myScheme.setDescription("A teacher scheme description");
 		fieldScreenSchemeManager.createFieldScreenScheme(myScheme);
 
-		// add screen
-
+		// Add screen
 		FieldScreenSchemeItem mySchemeItemCreate = new FieldScreenSchemeItemImpl(fieldScreenSchemeManager, fieldScreenManager);
 		mySchemeItemCreate.setIssueOperation(IssueOperations.CREATE_ISSUE_OPERATION); // or: EDIT_ISSUE_OPERATION, VIEW_ISSUE_OPERATION
 		mySchemeItemCreate.setFieldScreen(screenCreateIssueType);
@@ -127,13 +119,13 @@ public class IssueTypeScreenSchemeCreation {
 		myScheme.addFieldScreenSchemeItem(mySchemeItemView);
 
 
-		// create issueTypeScreenScheme
+		// Create issueTypeScreenScheme
 		IssueTypeScreenScheme myIssueTypeScreenScheme = new IssueTypeScreenSchemeImpl(issueTypeScreenSchemeManager);
 		myIssueTypeScreenScheme.setName("Teacher Issue Type Screen Scheme");
 		myIssueTypeScreenScheme.setDescription("Teacher Issue Type Screen Scheme Description");
 		issueTypeScreenSchemeManager.createIssueTypeScreenScheme(myIssueTypeScreenScheme);
 
-		// add scheme to issueTypeScreenScheme
+		// Add scheme to issueTypeScreenScheme
 		IssueTypeScreenSchemeEntity myEntity = null;
 
 		Collection<IssueType> coll = issueTypeManager.getIssueTypes();
@@ -148,22 +140,13 @@ public class IssueTypeScreenSchemeCreation {
 				addEntity(myScheme, myIssueTypeScreenScheme, myEntity, tmp);
 			}
 		}
-
-		//      // assign to project
-		//      // TODO Which projects
-		//
-		//      Project project = ComponentAccessor.getProjectManager().getProjects().get(0);
-		//
-		//      if(project != null) {
-		//          issueTypeScreenSchemeManager.addSchemeAssociation(project, myIssueTypeScreenScheme);
-		//      }
-
 	}
 
 	private void addEntity(FieldScreenScheme myScheme, IssueTypeScreenScheme myIssueTypeScreenScheme, IssueTypeScreenSchemeEntity myEntity, IssueType issueType) {
 		myEntity = new IssueTypeScreenSchemeEntityImpl(issueTypeScreenSchemeManager,
 				fieldScreenSchemeManager, constantsManager);
-		myEntity.setIssueTypeId(issueType != null ? issueType.getId() : null); // an entity can be for all IssueTypes (-&gt; null), or just for 1
+		// An entity can be for all IssueTypes, or just for 1
+		myEntity.setIssueTypeId(issueType != null ? issueType.getId() : null); 
 		myEntity.setFieldScreenScheme(myScheme);
 		myIssueTypeScreenScheme.addEntity(myEntity);
 	}
