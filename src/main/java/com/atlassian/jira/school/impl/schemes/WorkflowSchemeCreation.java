@@ -26,19 +26,15 @@ public class WorkflowSchemeCreation {
 	}
 	
 	public void assigneHomeworkIssueTypeToHomeworkWorkflow() throws GenericEntityException {
-		Project project = projectManager.getProjects().get(0);
-		GenericValue scheme = workflowSchemeManager.getWorkflowScheme(project);
+		GenericValue scheme = workflowSchemeManager.createScheme("Homework Workflow Scheme", "TEST");
 		
 		Collection<IssueType> list = issueTypeManager.getIssueTypes();
 		
 		for(Iterator<IssueType> iterator = list.iterator(); iterator.hasNext(); ) {
 			IssueType issueType = (IssueType) iterator.next();
 			if (issueType.getName().equals("Homework")) {
-				workflowSchemeManager.addWorkflowToScheme(scheme, "Homework:Workflow", issueType.getId());
-			}
-			
+				workflowSchemeManager.addWorkflowToScheme(scheme, "Homework Workflow", issueType.getId());
+			}	
 		}
-		
 	}
-	
 }

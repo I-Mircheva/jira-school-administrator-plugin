@@ -51,10 +51,10 @@ public class AddProjectHookClass implements AddProjectHook {
 		// assign workflow scheme
 
 		Project project = configureData.project();
-
+		ProjectManager projectManager = ComponentAccessor.getProjectManager();
+		
 		WorkflowSchemeManager workflowSchemeManager = ComponentAccessor.getWorkflowSchemeManager();
-		AssignableWorkflowScheme workflowScheme = workflowSchemeManager.getWorkflowSchemeObj("Workflow Scheme");
-
+		AssignableWorkflowScheme workflowScheme = workflowSchemeManager.getWorkflowSchemeObj("Homework Workflow Scheme");
 		MigrationHelperFactory migrationHelperFactory = ComponentAccessor
 				.getComponent(MigrationHelperFactory.class);
 
@@ -70,7 +70,6 @@ public class AddProjectHookClass implements AddProjectHook {
 
 		IssueTypeSchemeManager issueTypeSchemeManager = ComponentAccessor.getIssueTypeSchemeManager();
 		FieldConfigSchemeManager fieldConfigSchemeManager = ComponentAccessor.getFieldConfigSchemeManager();
-		ProjectManager projectManager = ComponentAccessor.getProjectManager();
 		FieldManager fieldManager = ComponentAccessor.getFieldManager();
 
 		FieldConfigScheme issueTypeScheme = null;
