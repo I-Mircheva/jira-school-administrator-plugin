@@ -39,7 +39,7 @@ public class PermissionSchemeCreation {
 		);
 	}
 
-	public void createPermissionScheme() {
+	public void createSchoolPermissionScheme() {
 
 		Group teachers = groupManager.getGroup("Teachers");
 		Group students = groupManager.getGroup("Students");
@@ -97,6 +97,56 @@ public class PermissionSchemeCreation {
 		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "School Permission Scheme", schemeEntities);
 
 		if(permissionSchemeManager.getSchemeObject("School Permission Scheme") == null) {
+			permissionSchemeManager.createSchemeAndEntities(draftScheme);
+		}
+	}
+	
+	public void createStudentRecordsPermissionScheme() {
+
+		Group teachers = groupManager.getGroup("Teachers");
+
+		Collection<SchemeEntity> schemeEntities = new ArrayList<>();
+
+		if(applicationUser.getName().equals("admin")) {
+			schemeEntities.add(new SchemeEntity("user", applicationUser.getName(), ADMINISTER_PROJECTS));
+			schemeEntities.add(new SchemeEntity("user", applicationUser.getName(), BROWSE_PROJECTS));
+		}
+		
+		schemeEntities.add(entityBuilder(teachers, ADD_COMMENTS));
+		schemeEntities.add(entityBuilder(teachers, ADMINISTER_PROJECTS));
+		schemeEntities.add(entityBuilder(teachers, ASSIGNABLE_USER));
+		schemeEntities.add(entityBuilder(teachers, ASSIGN_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, BROWSE_PROJECTS));
+		schemeEntities.add(entityBuilder(teachers, CLOSE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, CREATE_ATTACHMENTS));
+		schemeEntities.add(entityBuilder(teachers, CREATE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, DELETE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, DELETE_OWN_ATTACHMENTS));
+		schemeEntities.add(entityBuilder(teachers, DELETE_OWN_COMMENTS));
+		schemeEntities.add(entityBuilder(teachers, EDIT_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, EDIT_OWN_COMMENTS));
+		schemeEntities.add(entityBuilder(teachers, LINK_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, MANAGE_WATCHERS));
+		schemeEntities.add(entityBuilder(teachers, MODIFY_REPORTER));
+		schemeEntities.add(entityBuilder(teachers, MOVE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, RESOLVE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, SCHEDULE_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, SET_ISSUE_SECURITY));
+		schemeEntities.add(entityBuilder(teachers, TRANSITION_ISSUES));
+		schemeEntities.add(entityBuilder(teachers, VIEW_READONLY_WORKFLOW));
+		schemeEntities.add(entityBuilder(teachers, VIEW_VOTERS_AND_WATCHERS));
+		schemeEntities.add(entityBuilder(teachers, WORK_ON_ISSUES));
+
+
+		Long nextId = permissionSchemeManager.getSchemeObjects()
+				.stream()
+				.reduce((a, b) -> b)
+				.get()
+				.getId() + 1;
+
+		Scheme draftScheme = new Scheme(nextId, "PermissionScheme", "Student Records Permission Scheme", schemeEntities);
+
+		if(permissionSchemeManager.getSchemeObject("Student Records Permission Scheme") == null) {
 			permissionSchemeManager.createSchemeAndEntities(draftScheme);
 		}
 	}
