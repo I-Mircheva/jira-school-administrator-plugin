@@ -32,7 +32,7 @@ public class IssueTypeCreation {
 
 	public void homeworkIssueType() {
 			if(issueTypeDoesNotExist("Homework")) {
-				issueTypeManager.createSubTaskIssueType("Homework", "Homework on lecture", new Long(3));
+				issueTypeManager.createIssueType("Homework", "Homework on lecture", new Long(3));
 			}
 	}
 

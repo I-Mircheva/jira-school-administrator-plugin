@@ -132,7 +132,7 @@ public class AddProjectHookClass implements AddProjectHook {
 
 		schemeIds.add(permissionSchemeManager.getSchemeObject("School Permission Scheme").getId());
 
-		permissionSchemeService.assignPermissionSchemeToProject(applicationUser, schemeIds.get(0), projectIds.get(0));
+		permissionSchemeService.assignPermissionSchemeToProject(applicationUser, schemeIds.get(1), projectIds.get(0));
 
 		return configureResponse;
 		
